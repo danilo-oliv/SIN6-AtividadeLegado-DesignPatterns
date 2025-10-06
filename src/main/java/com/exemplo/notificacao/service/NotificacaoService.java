@@ -1,24 +1,23 @@
 package com.exemplo.notificacao.service;
 
 import com.exemplo.notificacao.model.Pedido;
+import com.exemplo.notificacao.strategy.INotificacaoStrategy;
+
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificacaoService {
 
-    private final EmailService emailService;
-    private final SmsService smsService;
-    private final PushService pushService;
-
-    public NotificacaoService(EmailService emailService, SmsService smsService, PushService pushService) {
-        this.emailService = emailService;
-        this.smsService = smsService;
-        this.pushService = pushService;
-    }
+    private INotificacaoStrategy strategy;
 
     public void enviarNotificacoes(Pedido pedido) {
-        emailService.enviar(pedido);
-        smsService.enviar(pedido);
-        pushService.enviar(pedido);
+        this.strategy.notificar(pedido);
     }
+
+    public void setStrategy(INotificacaoStrategy strategy){
+        this.strategy = strategy;
+    }
+
+
 }
